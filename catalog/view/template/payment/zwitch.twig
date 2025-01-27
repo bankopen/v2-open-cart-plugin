@@ -1,0 +1,74 @@
+{% if test_mode %}
+    <script id="context" type="text/javascript" src="https://sandbox-payments.open.money/layer"></script>
+{% else %}
+    <script id="context" type="text/javascript" src="https://payments.open.money/layer"></script>
+{% endif %}
+<fieldset>
+  <div class="text-end">
+    <button type="button" id="button-confirm" class="btn btn-primary">{{ button_confirm }}</button>
+  </div>
+</fieldset>
+<script type="text/javascript">
+
+    // Bind the Layer.checkout initialization script to the button click event
+    $('#button-confirm').on('click', function() {
+        var element = this;
+        
+        Layer.checkout({
+            token: "{{ payment_token }}", // Replace with your payment token
+            accesskey: "{{ access_key }}", // Replace with your access key
+            theme: {
+                logo: "{{ logo }}", // Replace with your logo URL
+                color: "{{ payment_zwitch_page_color }}", // Replace with your theme color
+                error_color: "#ff2b2b" // Replace with your error color
+            }
+        },
+        function(response) {
+            // Handle payment response
+            if (response.status == "captured") {
+                // Payment successful
+
+                $.ajax({
+                    url: 'index.php?route=extension/zwitch/payment/zwitch{{ separator }}confirm&language={{ language }}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        "payment_id": response.payment_id,
+                    },
+                    beforeSend: function () {
+                        $(element).button('loading');
+                    },
+                    complete: function () {
+                        $(element).button('reset');
+                    },
+                    success: function (json) {
+
+                        if (json['error']) {
+                            $('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
+                        }
+
+                        if (json['redirect']) {
+                            location = json['redirect']; // Redirect to success page
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                });
+
+            } else if (response.status == "failed") {
+                // Payment failed
+                window.location.href = "{{ failure_redirect_url }}"; // Redirect to failure page
+            } else if (response.status == "cancelled") {
+                // Payment cancelled
+                window.location.href = "{{ cancel_redirect_url }}"; // Redirect to cancel page
+            }
+        },
+        function(err) {
+            // Handle integration errors
+            console.error('Integration error:', err);
+            alert('An error occurred. Please try again.');
+        });
+    });
+
+</script>
