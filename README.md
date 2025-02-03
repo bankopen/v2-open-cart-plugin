@@ -1,6 +1,6 @@
-# Zwitch Payment Extension for OpenCart 4
+# Zwitch Payment Extension for OpenCart 3
 
-This extension integrates the **Zwitch API** with **OpenCart 4**, enabling Indian merchants to accept payments via **Credit Cards**, **Debit Cards**, **Net Banking**, **Wallets**, and more—all without redirecting customers away from the OpenCart store.
+This extension integrates the **Zwitch API** with **OpenCart 3**, enabling Indian merchants to accept payments via **Credit Cards**, **Debit Cards**, **Net Banking**, **Wallets**, and more—all without redirecting customers away from the OpenCart store.
 
 ---
 
