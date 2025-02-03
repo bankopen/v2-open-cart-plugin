@@ -1,31 +1,30 @@
 <?php
-namespace Opencart\Catalog\Model\Extension\Zwitch\Payment;
 
-class Zwitch extends \Opencart\System\Engine\Model
+class ModelExtensionPaymentZwitch extends Model
 {
-    public function getMethods()
+    public function getMethod($address, $total)
     {
-        $this->load->language('extension/zwitch/payment/zwitch');
+        $this->load->language('extension/payment/zwitch');
 
-        $status = true;
+        $status = false;
+        $method_data = [];
 
-		if ($this->cart->hasSubscription()) {
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('payment_zwitch_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+
+        if (!$this->config->get('payment_zwitch_geo_zone_id')) {
+			$status = true;
+		} elseif ($query->num_rows) {
+			$status = true;
+		} else {
 			$status = false;
 		}
 
-		$method_data = [];
-
 		if ($status) {
-			$option_data['zwitch'] = [
-				'code' => 'zwitch.zwitch',
-				'name' => $this->language->get('heading_title')
-			];
-
 			$method_data = [
-				'code'       => 'zwitch',
-				'name'       => $this->language->get('heading_title'),
-				'option'     => $option_data,
-				'sort_order' => $this->config->get('payment_zwitch_transfer_sort_order')
+				'code'          => 'zwitch',
+				'title'         => $this->language->get('heading_title'),
+				'trems'         => '',
+				'sort_order'    => $this->config->get('payment_zwitch_transfer_sort_order')
 			];
 		}
 
@@ -75,7 +74,7 @@ class Zwitch extends \Opencart\System\Engine\Model
         return [
             "amount" => number_format($order_info['total'], 2, '.', ''),
             "currency" => "INR",
-            "mtx" => bin2hex(random_bytes(10)) . 'order_' .  $order_id,
+            "mtx" => bin2hex(random_bytes(10)) . '_order_' .  $order_id,
             "contact_number" => $order_info['telephone'],
             "email_id" => $order_info['email'],
         ];

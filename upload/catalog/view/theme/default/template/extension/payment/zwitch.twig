@@ -3,11 +3,11 @@
 {% else %}
     <script id="context" type="text/javascript" src="https://payments.open.money/layer"></script>
 {% endif %}
-<fieldset>
-  <div class="text-end">
-    <button type="button" id="button-confirm" class="btn btn-primary">{{ button_confirm }}</button>
+<div class="buttons">
+  <div class="pull-right">
+    <input type="button" value="{{ button_confirm }}" id="button-confirm" data-loading-text="{{ text_loading }}" class="btn btn-primary" />
   </div>
-</fieldset>
+</div>
 <script type="text/javascript">
 
     // Bind the Layer.checkout initialization script to the button click event
@@ -29,7 +29,7 @@
                 // Payment successful
 
                 $.ajax({
-                    url: 'index.php?route=extension/zwitch/payment/zwitch{{ separator }}confirm&language={{ language }}',
+                    url: 'index.php?route=extension/payment/zwitch/confirm',
                     type: 'POST',
                     dataType: 'json',
                     data: {

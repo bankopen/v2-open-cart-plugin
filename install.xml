@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<modification>
+    <name>Zwitch Payment Gateway</name>
+    <code>zwitch_1</code>
+    <version>1.0.0</version>
+    <author>Zwitch</author>
+    <link>https://zwitch.io</link>
+    
+    <file path="">
+        <operation>
+            <search><![CDATA[]]></search>
+            <add position=""><![CDATA[]]></add>
+        </operation>
+    </file>
+</modification>

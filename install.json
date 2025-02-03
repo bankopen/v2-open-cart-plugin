@@ -1,8 +1,0 @@
-{
-    "name": "Zwitch Payment Gateway",
-    "description": "Zwitch Payment Gateway for OpenCart",
-    "code": "zwitch",
-    "version": "1.1.3",
-    "author": "Zwitch",
-    "link": "https://zwitch.io"
-}

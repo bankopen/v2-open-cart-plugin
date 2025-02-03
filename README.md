@@ -43,8 +43,8 @@ Access your OpenCart store's admin dashboard.
 ---
 
 ## 📄 Requirements
-- OpenCart 4.x
-- PHP 8.1 or higher
+- OpenCart 3.x
+- PHP 7.4 or higher
 - Zwitch Merchant Account (to obtain Access Key and Secret Key)
 
 ---
